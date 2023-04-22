@@ -1,4 +1,4 @@
-A collection of Go packages with a focus on simplicity, carefully crafted with ❤️
+A collection of Go packages focused on simplicity and crafted with ❤️
 
 * Simple API
 * Dependency-free
