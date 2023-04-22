@@ -1,4 +1,4 @@
-A collection of Go packages focused on simplicity and crafted with ❤️
+A collection of Go packages focused on simplicity, built with ❤️ and 🍕
 
 * Simple API
 * Dependency-free
