@@ -1,0 +1,27 @@
+name: test
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        go: [ oldstable, stable ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go ${{ matrix.go }}
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Run tests
+        run: go test -v -race -shuffle=on -coverprofile=coverage.out ./...
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: coverage.out
