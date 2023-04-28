@@ -7,14 +7,17 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      # https://github.com/actions/checkout
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # https://github.com/actions/setup-go
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version-file: go.mod
 
+      # https://github.com/golangci/golangci-lint-action
       - name: Run linters
         uses: golangci/golangci-lint-action@v3
         with:
