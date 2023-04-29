@@ -17,16 +17,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      # https://github.com/actions/setup-go
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version-file: go.mod
-
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           latest=$(git describe --tags --abbrev=0)
           git log --format="* %h %s" $latest..HEAD > changelog.txt
-          gh release create ${{ inputs.tag }} --notes-file=changelog.txt --verify-tag
+          gh release create ${{ inputs.tag }} --notes-file=changelog.txt
