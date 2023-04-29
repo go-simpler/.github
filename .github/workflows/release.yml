@@ -2,6 +2,10 @@ name: release
 
 on:
   workflow_call:
+    inputs:
+      tag:
+        type: string
+        required: true
 
 jobs:
   release:
@@ -25,5 +29,4 @@ jobs:
         run: |
           latest=$(git describe --tags --abbrev=0)
           git log --format="* %h %s" $latest..HEAD > changelog.txt
-          tag=$(basename ${{ github.ref }})
-          gh release create $tag --notes-file=changelog.txt --verify-tag
+          gh release create ${{ inputs.tag }} --notes-file=changelog.txt --verify-tag
