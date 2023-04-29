@@ -19,12 +19,11 @@ jobs:
         with:
           go-version-file: go.mod
 
-      # https://github.com/goreleaser/goreleaser-action
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v4
-        with:
-          version: latest
-          args: release --clean
+      - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+        run: |
+          latest=$(git describe --tags --abbrev=0)
+          git log --format="* %h %s" $latest..HEAD > changelog.txt
+          tag=$(basename ${{ github.ref }})
+          gh release create $tag --notes-file=changelog.txt --verify-tag
