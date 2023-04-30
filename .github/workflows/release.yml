@@ -1,0 +1,27 @@
+name: release
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        required: true
+        description: The next semantic version to release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          latest=$(git describe --tags --abbrev=0)
+          git log --format="* %h %s" $latest..HEAD > changelog.txt
+          gh release create ${{ inputs.version }} --notes-file=changelog.txt
