@@ -11,7 +11,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version-file: go.mod
+          go-version: stable
 
       # https://github.com/actions/checkout
       - name: Checkout code
