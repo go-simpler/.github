@@ -1,0 +1,20 @@
+name: vuln
+
+on:
+  workflow_call:
+
+jobs:
+  vuln:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/setup-go
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: stable
+
+      # https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck
+      - name: Run govulncheck
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck -v ./...
