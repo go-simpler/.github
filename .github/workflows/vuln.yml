@@ -13,6 +13,10 @@ jobs:
         with:
           go-version: stable
 
+      # https://github.com/actions/checkout
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       # https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck
       - name: Run govulncheck
         run: |
