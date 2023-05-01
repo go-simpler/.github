@@ -2,12 +2,20 @@ name: test
 
 on:
   workflow_call:
+    inputs:
+      # arrays are not supported yet, so we use `string` + `fromJSON` as a temporarily workaround;
+      # see https://github.com/orgs/community/discussions/11692 for details.
+      go-versions:
+        type: string
+        required: false
+        default: '[ "oldstable", "stable" ]'
+        description: Go versions to test against (JSON array)
 
 jobs:
   test:
     strategy:
       matrix:
-        go: [ oldstable, stable ]
+        go: ${{ fromJSON(inputs.go-versions) }}
     runs-on: ubuntu-latest
     steps:
       # https://github.com/actions/setup-go
