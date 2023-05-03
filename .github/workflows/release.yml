@@ -7,6 +7,11 @@ on:
         type: string
         required: true
         description: The next semantic version to release
+      use-goreleaser:
+        type: boolean
+        required: false
+        default: false
+        description: Use GoReleaser to create a release
 
 jobs:
   release:
@@ -18,10 +23,31 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Create release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate changelog
         run: |
           latest=$(git describe --tags --abbrev=0)
           git log --format="* %h %s" $latest..HEAD > changelog.txt
-          gh release create ${{ inputs.version }} --notes-file=changelog.txt
+
+      - name: Create release
+        if: ${{ !inputs.use-goreleaser }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create ${{ inputs.version }} --notes-file=changelog.txt
+
+      # https://github.com/actions/setup-go
+      - name: Set up Go
+        if: ${{ inputs.use-goreleaser }}
+        uses: actions/setup-go@v4
+        with:
+          go-version: stable
+
+      # https://github.com/goreleaser/goreleaser-action
+      - name: Create release (via GoReleaser)
+        if: ${{ inputs.use-goreleaser }}
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          version: latest
+          args: release --clean --release-notes=changelog.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
