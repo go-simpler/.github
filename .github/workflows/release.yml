@@ -23,6 +23,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Create tag (if not already exists)
+        run: |
+          git rev-parse refs/tags/${{ inputs.version }} &> /dev/null || \
+          (git tag ${{ inputs.version }} && git push origin ${{ inputs.version }})
+
       - name: Generate changelog
         run: |
           latest=$(git describe --tags --abbrev=0)
@@ -32,7 +37,7 @@ jobs:
         if: ${{ !inputs.use-goreleaser }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create ${{ inputs.version }} --notes-file=changelog.txt
+        run: gh release create ${{ inputs.version }} --verify-tag --notes-file=changelog.txt
 
       # https://github.com/actions/setup-go
       - name: Set up Go
