@@ -30,8 +30,8 @@ jobs:
 
       - name: Generate changelog
         run: |
-          latest=$(git describe --tags --abbrev=0)
-          git log --format="* %h %s" $latest..HEAD > changelog.txt
+          previous=$(git describe --tags --abbrev=0 ${{ inputs.version }}~1)
+          git log --format="* %h %s" $previous..${{ inputs.version }} > changelog.txt
 
       - name: Create release
         if: ${{ !inputs.use-goreleaser }}
