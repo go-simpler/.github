@@ -12,6 +12,10 @@ on:
         required: false
         default: false
         description: Use GoReleaser to create a release
+    secrets:
+      HOMEBREW_TAP_TOKEN:
+        required: false
+        description: A token with the write permission for the `homebrew-tap` repository (required when using GoReleaser)
 
 jobs:
   release:
@@ -30,8 +34,9 @@ jobs:
 
       - name: Generate changelog
         run: |
-          latest=$(git describe --tags --abbrev=0)
-          git log --format="* %h %s" $latest..HEAD > changelog.txt
+          previous=$(git describe --tags --abbrev=0 ${{ inputs.version }}~1)
+          git log --format="* %h %s" $previous..${{ inputs.version }} | tee changelog.txt
+          echo changelog.txt >> .git/info/exclude # GoReleaser doesn't tolerate git in a dirty state.
 
       - name: Create release
         if: ${{ !inputs.use-goreleaser }}
@@ -55,4 +60,4 @@ jobs:
           args: release --clean --release-notes=changelog.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
