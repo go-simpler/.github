@@ -14,7 +14,6 @@ on:
         description: Use GoReleaser to create a release
     secrets:
       HOMEBREW_TAP_TOKEN:
-        type: string
         required: false
         description: A token with the write permission for the `homebrew-tap` repository (required when using GoReleaser)
 
