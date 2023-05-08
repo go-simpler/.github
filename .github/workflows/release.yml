@@ -31,7 +31,7 @@ jobs:
       - name: Generate changelog
         run: |
           previous=$(git describe --tags --abbrev=0 ${{ inputs.version }}~1)
-          git log --format="* %h %s" $previous..${{ inputs.version }} > changelog.txt
+          git log --format="* %h %s" $previous..${{ inputs.version }} | tee changelog.txt
           echo changelog.txt >> .git/info/exclude # GoReleaser doesn't tolerate git in a dirty state.
 
       - name: Create release
