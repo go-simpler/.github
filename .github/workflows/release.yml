@@ -12,6 +12,11 @@ on:
         required: false
         default: false
         description: Use GoReleaser to create a release
+    secrets:
+      HOMEBREW_TAP_TOKEN:
+        type: string
+        required: false
+        description: A token with the write permission for the `homebrew-tap` repository (required when using GoReleaser)
 
 jobs:
   release:
@@ -56,4 +61,4 @@ jobs:
           args: release --clean --release-notes=changelog.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
