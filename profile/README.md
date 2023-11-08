@@ -1,7 +1,11 @@
 [![](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua)
 
-A collection of tools and libraries for Go built with ❤️
+A collection of Go packages built with ❤️
 
 * 💡️ Simple API
-* ☂️ Reasonable code coverage
 * 📦 Dependency-free libraries
+* ☂️ Reasonable code coverage
+
+See [go-simpler.org][1] for the full list of projects.
+
+[1]: https://go-simpler.org
