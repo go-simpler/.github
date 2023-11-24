@@ -8,4 +8,8 @@ A collection of Go packages built with ❤️
 
 See [go-simpler.org][1] for the full list of projects.
 
+Contributions are welcome!
+Please, make sure the changes you propose follow our [styleguide][2]. Have fun!
+
 [1]: https://go-simpler.org
+[2]: https://github.com/go-simpler/styleguide
