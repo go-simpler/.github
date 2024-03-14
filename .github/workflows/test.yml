@@ -15,6 +15,11 @@ on:
         required: false
         default: '[ "oldstable", "stable" ]'
         description: Go versions to test against (JSON array)
+      packages:
+        type: string
+        required: false
+        default: './...'
+        description: Space-separated list of Go packages to test
 
 jobs:
   test:
@@ -37,7 +42,7 @@ jobs:
       - name: Run tests
         # do not use `=` to join flags and values, it won't work on Windows;
         # see https://github.com/PowerShell/PowerShell/issues/6291 for details.
-        run: go test -v -race -shuffle on -coverprofile coverage.out ./...
+        run: go test -v -race -shuffle on -coverprofile coverage.out ${{ inputs.packages }}
 
       # https://github.com/codecov/codecov-action
       - name: Upload coverage
