@@ -6,7 +6,9 @@ A collection of Go packages built with ❤️
 * 📦 Dependency-free libraries
 * ☂️ Good code coverage
 
-See [go-simpler.org][1] for the full list of projects.
+See [go-simpler.org][1] for the full list of packages.
+
+⭐️ If you find a package useful, please consider giving it a star so we know it's worth maintaining.
 
 If you have found a bug, have a feature request, or just want to leave feedback, feel free to open an issue.
 We also welcome PRs for open issues.
