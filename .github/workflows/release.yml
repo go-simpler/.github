@@ -57,7 +57,7 @@ jobs:
       # https://github.com/goreleaser/goreleaser-action
       - name: Create release (via GoReleaser)
         if: ${{ inputs.use-goreleaser }}
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         with:
           version: latest
           args: release --clean --release-notes=changelog.txt
