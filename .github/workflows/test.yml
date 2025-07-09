@@ -1,0 +1,51 @@
+name: test
+
+on:
+  workflow_call:
+    inputs:
+      # arrays are not supported yet, so we use `string` + `fromJSON` as a temporarily workaround;
+      # see https://github.com/orgs/community/discussions/11692 for details.
+      runs-on:
+        type: string
+        required: false
+        default: '[ "ubuntu-latest" ]'
+        description: OSes to run tests on (JSON array)
+      go-versions:
+        type: string
+        required: false
+        default: '[ "oldstable", "stable" ]'
+        description: Go versions to test against (JSON array)
+      packages:
+        type: string
+        required: false
+        default: './...'
+        description: Space-separated list of Go packages to test
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: ${{ fromJSON(inputs.runs-on) }}
+        go: ${{ fromJSON(inputs.go-versions) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      # https://github.com/actions/setup-go
+      - name: Set up Go ${{ matrix.go }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+
+      # https://github.com/actions/checkout
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        # do not use `=` to join flags and values, it won't work on Windows;
+        # see https://github.com/PowerShell/PowerShell/issues/6291 for details.
+        run: go test -v -race -shuffle on -coverprofile coverage.out ${{ inputs.packages }}
+
+      # https://github.com/codecov/codecov-action
+      - name: Upload coverage
+        uses: codecov/codecov-action@v5
+        with:
+          files: coverage.out
