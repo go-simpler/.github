@@ -37,7 +37,7 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run tests
         # do not use `=` to join flags and values, it won't work on Windows;
