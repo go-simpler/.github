@@ -50,7 +50,7 @@ jobs:
       # https://github.com/actions/setup-go
       - name: Set up Go
         if: ${{ inputs.use-goreleaser }}
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: stable
 
