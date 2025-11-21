@@ -15,7 +15,7 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       # https://github.com/golangci/golangci-lint-action
       - name: Run linters
