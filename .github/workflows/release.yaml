@@ -23,9 +23,6 @@ jobs:
         with:
           fetch-depth: 0 # Required by the GoReleaser action.
 
-      - name: Create tag
-        run: git tag ${{ inputs.version }} && git push origin ${{ inputs.version }}
-
       - name: Create release
         if: ${{ !inputs.goreleaser }}
         env:
