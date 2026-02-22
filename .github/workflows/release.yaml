@@ -1,0 +1,46 @@
+name: release
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        required: true
+        description: The semantic version to release.
+      goreleaser:
+        type: boolean
+        required: false
+        default: false
+        description: Use GoReleaser to create a release.
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # Required by the GoReleaser action.
+
+      - name: Create release
+        if: ${{ !inputs.goreleaser }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create ${{ inputs.version }} --verify-tag --generate-notes
+
+      # https://github.com/actions/setup-go
+      - name: Set up Go
+        if: ${{ inputs.goreleaser }}
+        uses: actions/setup-go@v6
+        with:
+          go-version: stable
+
+      # https://github.com/goreleaser/goreleaser-action
+      - name: Create release
+        if: ${{ inputs.goreleaser }}
+        uses: goreleaser/goreleaser-action@v7
+        with:
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

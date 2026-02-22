@@ -1,0 +1,39 @@
+name: test
+
+on:
+  workflow_call:
+    inputs:
+      # Arrays are not yet supported, use string + fromJSON() as a workaround.
+      # See https://github.com/orgs/community/discussions/11692 for details.
+      go:
+        type: string
+        required: false
+        default: '["stable", "oldstable"]'
+        description: Go versions to test against (JSON array).
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        go: ${{ fromJSON(inputs.go) }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      # https://github.com/actions/checkout
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      # https://github.com/actions/setup-go
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Run tests
+        run: make test
+
+      # https://github.com/codecov/codecov-action
+      - name: Upload coverage
+        uses: codecov/codecov-action@v5
+        with:
+          files: coverage.out
