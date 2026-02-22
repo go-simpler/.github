@@ -7,10 +7,6 @@ jobs:
   vuln:
     runs-on: ubuntu-latest
     steps:
-      # https://github.com/actions/checkout
-      - name: Checkout code
-        uses: actions/checkout@v6
-
       # https://github.com/golang/govulncheck-action
       - name: Run govulncheck
         uses: golang/govulncheck-action@v1
