@@ -19,7 +19,7 @@ jobs:
     steps:
       # https://github.com/actions/checkout
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Required by the GoReleaser action.
 
